@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Lista książek wszystkich użytkowników</h2>
+
+<ol>
+    {% for book in books %}
+        <li><a href="{% url "specific-book" book.pk %}">{{ book }}</a></li>
+    {% endfor %}
+</ol>
+
+{% endblock %}
+

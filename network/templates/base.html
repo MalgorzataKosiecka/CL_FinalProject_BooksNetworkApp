@@ -14,7 +14,7 @@
         {% endblock %}
 
         <footer>
-            <p>Data: {{actual_date}} | wersja: {{version}}
+            <p>Data: {{actual_date}} | wersja: {{version}} | <a href="{% url "logged-user" %}">strona główna</a>
             {% if user.is_authenticated %}
                 | zalogowano jako: <b>{{ user.username }}</b> |
                 <a href="{% url 'logout' %}">wyloguj</a>

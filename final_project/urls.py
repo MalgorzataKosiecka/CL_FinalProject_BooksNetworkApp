@@ -16,13 +16,15 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from network.views import (UserLoginView, UserLogoutView, UserMainPageView)
+from network.views import (UserLoginView, UserLogoutView, UserMainPageView, AllBooksView, SpecificBookView)
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', UserLoginView.as_view(), name="main_page"),
+    url(r'^$', UserLoginView.as_view(), name="main-page"),
     url(r'^logout', UserLogoutView.as_view(), name="logout"),
-    url(r'^logged-user/', UserMainPageView.as_view(), name="logged-user")
+    url(r'^logged-user/', UserMainPageView.as_view(), name="logged-user"),
+    url(r'^all-books/$', AllBooksView.as_view(), name="all-books"),
+    url(r'^all-books/(?P<book_id>(\d)+)', SpecificBookView.as_view(), name="specific-book"),
 ]
 

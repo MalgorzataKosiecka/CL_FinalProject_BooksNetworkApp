@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Informacje o książce: {{ book.title }}, {{ book.author }}</h2>
+<ul>
+    <li>Tytuł: {{ book.title }}</li>
+    <li>Autor: {{ book.author }}</li>
+    <li>Wydawnictwo: {{ book.publishing_house }}</li>
+    <li>Rok wydania: {{ book.year_published }}</li>
+    <li>Kategoria: {{ book.get_book_kind_display }}</li>
+    <li>Forma wydania: {{ book.get_print_kind_display }}</li>
+    <li>Opis: {{ book.description }}</li>
+    <li>Na półce:
+        <ul>
+            {% for osoba in book.owned_by.all %}
+            <li>
+            {{ osoba.username }}
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    <li>Zarezerwowana przez: {{ book.reserved_by }}</li>
+</ul>
+
+{% endblock content %}
+

@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <div>
-    <p>Lista posiadanych książek</p>
+    <p>
+        {{ message }}
+    </p>
+</div>
+<div>
+    <p><b>Lista posiadanych książek</b></p>
     <table border="5px">
         <tr>
             <td>Tytuł</td>
@@ -13,7 +17,6 @@
             <td>Kategoria</td>
             <td>Forma wydania</td>
             <td>Opis</td>
-            <td>Właściciel</td>
         </tr>
     {% for book in user_list %}
         <tr>
@@ -24,26 +27,25 @@
             <td>{{ book.get_book_kind_display }}</td>
             <td>{{ book.get_print_kind_display }}</td>
             <td>{{ book.description }}</td>
-            <td>
-                {% for osoba in book.owned_by.all %}
-                {{ osoba.username }}
-                {% endfor %}
-            </td>
-
         </tr>
 
     {% endfor %}
     </table>
 </div>
 
-
 <div>
-    <p>Znajdź książkę</p>
+    <p><b>Znajdź książkę</b></p>
     <form method = "POST">
         {{ form.as_p }}
         {% csrf_token %}
         <button type="submit">szukaj</button>
     </form>
+</div>
+
+<div>
+    <p>
+        <a href="{% url "all-books" %}">Lista wszystkich książek</a>
+    </p>
 </div>
 
 {% endblock %}

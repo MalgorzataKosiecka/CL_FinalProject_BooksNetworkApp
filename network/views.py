@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views import View
 
 from .forms import UserLoginForm, BookSearchForm
-from .models import Book, BookOwned
+from .models import Book, BookOwned, BookReserved
 
 
 class UserLoginView(View):
@@ -44,8 +44,6 @@ class UserMainPageView(LoginRequiredMixin, View):
         form = BookSearchForm()
         user_list = Book.objects.filter(owned_by=request.user)
         username = User.objects.filter(username=request.user)
-        # all_books = Book.objects.all()
-        # username = all_books.owned_by.all()
         return render(request, "user-main.html", {"form": form, "user_list": user_list, "username": username})
 
     def post(self, request):
@@ -55,4 +53,21 @@ class UserMainPageView(LoginRequiredMixin, View):
             results = Book.objects.annotate(search=SearchVector("title", "author", "publishing_house"),
                                             ).filter(search__icontains=search)
             return render(request, "book-search.html", {"form": form, "results": results})
+
+
+class AllBooksView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        books = Book.objects.all().order_by("title")
+        return render(request, "all-books.html", {"books": books})
+
+
+class SpecificBookView(LoginRequiredMixin, View):
+
+    def get(self, request, book_id):
+        try:
+            book = Book.objects.get(pk=book_id)
+            return render(request, "specific-book.html", {"book": book})
+        except:
+            return HttpResponseRedirect("/logged-user/")
 
