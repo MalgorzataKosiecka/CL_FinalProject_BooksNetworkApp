@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<hr>
+<p>Znalezione książki:</p>
+    <ul>
+    {% for result in results %}
+        <li>
+        {{ result.title }}, {{ result.author }}, {{ result.publishing_house }}, {{ result.year_published }},
+        {{ result.get_book_kind_display }}, {{ result.get_print_kind_display }}, {{ result.description }},
+            właściciele:
+        {% for osoba in result.owned_by.all %}
+            {{ osoba.username }},
+        {% endfor %}
+        </li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
+

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div>
+    <p>Lista posiadanych książek</p>
+    <table border="5px">
+        <tr>
+            <td>Tytuł</td>
+            <td>Autor</td>
+            <td>Wydawnictwo</td>
+            <td>Rok wydania</td>
+            <td>Kategoria</td>
+            <td>Forma wydania</td>
+            <td>Opis</td>
+            <td>Właściciel</td>
+        </tr>
+    {% for book in user_list %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.publishing_house }}</td>
+            <td>{{ book.year_published }}</td>
+            <td>{{ book.get_book_kind_display }}</td>
+            <td>{{ book.get_print_kind_display }}</td>
+            <td>{{ book.description }}</td>
+            <td>
+                {% for osoba in book.owned_by.all %}
+                {{ osoba.username }}
+                {% endfor %}
+            </td>
+
+        </tr>
+
+    {% endfor %}
+    </table>
+</div>
+
+
+<div>
+    <p>Znajdź książkę</p>
+    <form method = "POST">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit">szukaj</button>
+    </form>
+</div>
+
+{% endblock %}
+
