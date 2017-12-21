@@ -41,7 +41,7 @@ class Book(models.Model):
     owned_by = models.ManyToManyField(User, through="BookOwned", related_name="owner_name",
                                       verbose_name="Właściciel")
     reserved_by = models.ManyToManyField(User, through="BookReserved", related_name="borrower_name",
-                                         verbose_name="Zamawiający")
+                                         verbose_name="Zamawiający", through_fields=("book", "username"))
 
     def __str__(self):
         return '"{}", {}, wyd. {}, rok wydania {}, {}, {}, opis: {}'.\
@@ -55,8 +55,8 @@ class BookOwned(models.Model):
 
 
 class BookReserved(models.Model):
-    username = models.ForeignKey(User, on_delete=None, related_name="borrower_name")
-    owner = models.ForeignKey(User, on_delete=None, related_name="owner_name")
+    username = models.ForeignKey(User, on_delete=None, related_name="borrower")
+    owner = models.ForeignKey(User, on_delete=None, related_name="owner")
     book = models.ForeignKey(Book, on_delete=None)
     date_from = models.DateField()
     date_to = models.DateField()
