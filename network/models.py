@@ -61,5 +61,5 @@ class BookReserved(models.Model):
     date_from = models.DateField()
     date_to = models.DateField()
     possibility_to_reserve = models.BooleanField(default=True)
-    user_number_in_line = models.IntegerField()
+    user_number_in_line = models.IntegerField(default=1)
 

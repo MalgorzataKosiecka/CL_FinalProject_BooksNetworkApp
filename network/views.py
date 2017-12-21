@@ -2,11 +2,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from .forms import UserLoginForm, BookSearchForm
+from .forms import UserLoginForm, BookSearchForm, ReserveBookForm
 from .models import Book, BookOwned, BookReserved
 
 
@@ -44,7 +44,9 @@ class UserMainPageView(LoginRequiredMixin, View):
         form = BookSearchForm()
         user_list = Book.objects.filter(owned_by=request.user)
         username = User.objects.filter(username=request.user)
-        return render(request, "user-main.html", {"form": form, "user_list": user_list, "username": username})
+        books_reserved = BookReserved.objects.filter(username=request.user)
+        return render(request, "user-main.html", {"form": form, "user_list": user_list, "username": username,
+                                                  "books_reserved": books_reserved})
 
     def post(self, request):
         form = BookSearchForm(request.POST)
@@ -70,4 +72,27 @@ class SpecificBookView(LoginRequiredMixin, View):
             return render(request, "specific-book.html", {"book": book})
         except:
             return HttpResponseRedirect("/logged-user/")
+
+
+class ReserveBookView(LoginRequiredMixin, View):
+
+    def get(self, request, book_id, owner_id):
+        form = ReserveBookForm()
+        book = Book.objects.get(pk=book_id)
+        owner = User.objects.get(pk=owner_id)
+        return render(request, "reserve-book.html", {"form": form, "book": book, "owner": owner})
+
+    def post(self, request, book_id, owner_id):
+        form = ReserveBookForm(request.POST)
+        if form.is_valid():
+            book = Book.objects.get(pk=book_id)
+            owner = User.objects.get(pk=owner_id)
+            new_borrowing = BookReserved.objects.create(username=request.user,
+                                                        owner=owner,
+                                                        book=book,
+                                                        date_from=form.cleaned_data["date_from"],
+                                                        date_to=form.cleaned_data["date_to"])
+            return HttpResponseRedirect("/logged-user/", {"form": form, "new_borrowing": new_borrowing})
+        else:
+            return HttpResponse("/logged-user/")
 

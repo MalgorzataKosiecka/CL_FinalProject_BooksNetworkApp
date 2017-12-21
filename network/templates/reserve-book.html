@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Wypożyczasz książkę:<br>
+    {{ book.title }}, {{ book.author }}, {{ book.publishing_house }}, {{ book.year_published }}<br><br>
+    Od użytkownika:<br>
+    {{ user.username }}
+</h2>
+
+<form method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <button type="submit">Pożycz</button>
+</form>
+
+{% endblock content %}
+

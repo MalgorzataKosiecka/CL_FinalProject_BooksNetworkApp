@@ -48,5 +48,16 @@
     </p>
 </div>
 
+<div>
+    <p><b>Lista zarezerwowanych książek</b></p>
+    <ul>
+        {% for record in books_reserved %}
+        <li>
+            {{ record }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
 {% endblock %}
 

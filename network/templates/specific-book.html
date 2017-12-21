@@ -15,7 +15,7 @@
         <ul>
             {% for osoba in book.owned_by.all %}
             <li>
-            {{ osoba.username }}
+            {{ osoba.username }} - <a href="{% url "reserve-book" book.pk osoba.pk %}">pożycz</a>
             </li>
             {% endfor %}
         </ul>
