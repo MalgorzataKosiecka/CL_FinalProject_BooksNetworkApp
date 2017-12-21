@@ -53,7 +53,7 @@
     <ul>
         {% for record in books_reserved %}
         <li>
-            {{ record }}
+            {{ record.book }}, {{ record.owner }}
         </li>
         {% endfor %}
     </ul>
