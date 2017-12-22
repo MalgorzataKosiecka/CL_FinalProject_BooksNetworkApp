@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from network.views import (UserLoginView, UserLogoutView, UserMainPageView, AllBooksView, SpecificBookView,
-                           ReserveBookView)
+                           ReserveBookView, AddBookView)
 
 
 urlpatterns = [
@@ -28,5 +28,6 @@ urlpatterns = [
     url(r'^all-books/$', AllBooksView.as_view(), name="all-books"),
     url(r'^all-books/(?P<book_id>(\d)+)', SpecificBookView.as_view(), name="specific-book"),
     url(r'^all-books/reserve-book/(?P<book_id>(\d)+)/(?P<owner_id>(\d)+)', ReserveBookView.as_view(), name="reserve-book"),
+    url(r'^add-book/', AddBookView.as_view(), name="add-book"),
 ]
 

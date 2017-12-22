@@ -7,12 +7,14 @@
     <ul>
     {% for result in results %}
         <li>
+        <a href="{% url "specific-book" result.pk %}">
         {{ result.title }}, {{ result.author }}, {{ result.publishing_house }}, {{ result.year_published }},
         {{ result.get_book_kind_display }}, {{ result.get_print_kind_display }}, {{ result.description }},
             właściciele:
         {% for osoba in result.owned_by.all %}
             {{ osoba.username }},
         {% endfor %}
+        </a>
         </li>
     {% endfor %}
     </ul>

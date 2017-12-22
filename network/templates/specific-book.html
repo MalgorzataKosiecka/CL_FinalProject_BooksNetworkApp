@@ -20,7 +20,11 @@
             {% endfor %}
         </ul>
     </li>
-    <li>Zarezerwowana przez: {{ book.reserved_by }}</li>
+    <li>Zarezerwowana przez:
+        {% for osoba in book.reserved_by.all %}
+        {{ osoba.username }}
+        {% endfor %}
+    </li>
 </ul>
 
 {% endblock content %}

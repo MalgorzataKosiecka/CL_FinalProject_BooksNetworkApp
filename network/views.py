@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from .forms import UserLoginForm, BookSearchForm, ReserveBookForm
+from .forms import UserLoginForm, BookSearchForm, ReserveBookForm, BookAddForm
 from .models import Book, BookOwned, BookReserved
 
 
@@ -95,4 +95,22 @@ class ReserveBookView(LoginRequiredMixin, View):
             return HttpResponseRedirect("/logged-user/", {"form": form, "new_borrowing": new_borrowing})
         else:
             return HttpResponse("/logged-user/")
+
+
+class AddBookView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        form = BookAddForm()
+        return render(request, "add-book.html", {"form": form})
+
+    def post(self, request):
+        form = BookAddForm(request.POST)
+        if form.is_valid():
+            new_book = Book.objects.create(title=form.cleaned_data["title"],
+                                           author=form.cleaned_data["author"],
+                                           publishing_house=form.cleaned_data["publishing_house"],
+                                           year_published=form.cleaned_data["year_published"],
+                                           book_kind=form.cleaned_data["book_kind"],
+                                           print_kind=form.cleaned_data["print_kind"])
+            return HttpResponseRedirect("/logged-user/", {"form": form, "new_book": new_book})
 
