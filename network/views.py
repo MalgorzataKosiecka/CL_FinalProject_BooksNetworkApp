@@ -112,5 +112,8 @@ class AddBookView(LoginRequiredMixin, View):
                                            year_published=form.cleaned_data["year_published"],
                                            book_kind=form.cleaned_data["book_kind"],
                                            print_kind=form.cleaned_data["print_kind"])
-            return HttpResponseRedirect("/logged-user/", {"form": form, "new_book": new_book})
+            new_book_owner = BookOwned.objects.create(username=request.user,
+                                                 book=new_book)
+            return HttpResponseRedirect("/logged-user/", {"form": form, "new_book": new_book,
+                                                          "new_book_owner": new_book_owner})
 
